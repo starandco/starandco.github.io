@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panier - STAR AND CO</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Bandeau en haut de la page -->
+    <div id="bandeau">
+        <img src="Star_co.png" alt="starandcologo" height="50">
+        <a href="index.html">Accueil</a>
+        <a href="catalogue.html">Catalogue</a>
+        <a href="panier.html">Panier</a>
+    </div>
+</head>
+<body>
+    <h1>Panier</h1>
+    <div id="panier-content"></div>
+    <p>Texte décrivant le déroulement de la commande...</p>
+    <form id="commande-form">
+        <label for="email">Votre e-mail :</label>
+        <input type="email" id="email" name="email" required>
+        <button type="submit" onclick="passerCommande(event)">Commander !</button>
+    </form>
+
+    <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+    <script>
+        (function(){
+            emailjs.init("ti_tbWUHJIB4qklRd");
+        })();
+
+        function afficherPanier() {
+            var panier = JSON.parse(localStorage.getItem("panier")) || [];
+            var panierContent = document.getElementById("panier-content");
+            panierContent.innerHTML = "";
+            panier.forEach(function(article) {
+                var articleDiv = document.createElement("div");
+                articleDiv.innerHTML = "<h2>" + article.nom + "</h2>" +
+                                       "<p>Couleur: " + article.couleur + "</p>" +
+                                       "<p>Prix: " + article.prix + "€</p>"
+                panierContent.appendChild(articleDiv);
+            });
+        }
+
+        function passerCommande(event) {
+            event.preventDefault(); // Empêche le comportement par défaut du formulaire
+            var panier = JSON.parse(localStorage.getItem("panier")) || [];
+            var contenuCommande = "Contenu de la commande :\n\n";
+            panier.forEach(function(article) {
+                contenuCommande += "Nom: " + article.nom + "\n";
+                contenuCommande += "Couleur: " + article.couleur + "\n";
+                contenuCommande += "Prix: " + article.prix + "€\n\n";
+            });
+
+            var email = document.getElementById("email").value; // Récupère la valeur de l'email
+
+            contenuCommande += "E-mail d'envoie' : " + email + "\n";
+
+            var params = {
+                to_email: "starsandco@laposte.net", // Envoie également à l'adresse spécifiée dans le champ email
+                subject: "Nouvelle commande sur votre site",
+                message: contenuCommande
+            };
+
+            emailjs.send("service_ybpeptj", "template_6lhf8c2", params)
+                .then(function(response) {
+                    alert("Votre commande a été envoyée avec succès !");
+                    localStorage.removeItem("panier");
+                    afficherPanier();
+                }, function(error) {
+                    console.log("Erreur lors de l'envoi de l'e-mail :", error);
+                    alert("Une erreur s'est produite lors de l'envoi de la commande. Veuillez réessayer.");
+                });
+        }
+
+        afficherPanier(); // Appel pour afficher le contenu du panier lors du chargement de la page
+    </script>
+</body>
+</html>

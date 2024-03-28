@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panier - STAR AND CO</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Bandeau en haut de la page -->
+    <div id="bandeau">
+        <img src="Star_co.png" alt="starandcologo" height="50">
+        <a href="index.html">Accueil</a>
+        <a href="catalogue.html">Catalogue</a>
+        <a href="panier.html">Panier</a>
+    </div>
+</head>
+<body>
+    <h1>Nom de l'article 1</h1>
+    <img src="image_article1.jpg" alt="Image de l'article 1">
+    <p>Prix: 10€</p>
+    <p>Choisissez une couleur:</p>
+    <select id="select-color">
+        <option value="red">Rouge</option>
+        <option value="blue">Bleu</option>
+        <option value="green">Vert</option>
+        <option value="yellow">Jaune</option>
+    </select>
+    <button onclick="ajouterAuPanier('Article 1', 10)">Ajouter au panier</button>
+
+    <script>
+        function ajouterAuPanier(nomArticle, prixArticle) {
+            var couleur = document.getElementById("select-color").value;
+            var article = { nom: nomArticle, prix: prixArticle, couleur: couleur };
+            var panier = JSON.parse(localStorage.getItem("panier")) || [];
+            panier.push(article);
+            localStorage.setItem("panier", JSON.stringify(panier));
+            alert("Article ajouté au panier !");
+        }
+    </script>
+</body>
+</html>
