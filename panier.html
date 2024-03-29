@@ -9,20 +9,46 @@
 <body>
     <!-- Bandeau en haut de la page -->
     <div id="bandeau">
-        <img src="Star_co.png" alt="starandcologo" height="50">
+        <img src="./src/starandco2.png" alt="starandcologo" height="70">
         <a href="index.html">Accueil</a>
         <a href="catalogue.html">Catalogue</a>
         <a href="panier.html">Panier</a>
+        <a href="videgreniers.html">Vide - Greniers à venir</a>
     </div>
-</head>
-<body>
+
     <h1>Panier</h1>
     <div id="panier-content"></div>
-    <p>Texte décrivant le déroulement de la commande...</p>
     <form id="commande-form">
+        <label for="nom">Votre nom et prénom :</label>
+        <input type="text" id="nom" name="nom" required> <!-- Champ nom/prénom avec attribut required -->
+        <br>
         <label for="email">Votre e-mail :</label>
-        <input type="email" id="email" name="email" required>
+        <input type="email" id="email" name="email" required> <!-- Champ email avec attribut required -->
+
+        <br>
+
+        <p>Mode d'envoi</p>
+        <select id="choix-site">
+            <option value="-">---</option>
+            <option value="vinted">Vinted</option>
+            <option value="vide-greniers">Vide-Greniers</option>
+        </select>
+
         <button type="submit" onclick="passerCommande(event)">Commander !</button>
+
+        <p>Si le mode d'envoi choisi est VINTED,</p>
+        <p>Vous recevrez l'email de confirmation de commande dans un délai de 5 jours. </p>
+        <p>Un code vous sera fourni, ainsi que le lien VINTED du produit commandé. </p>
+        <p>Ce code vous sera demandé dans la discution VINTED pour procéder au paiement et à l'envoi. </p>
+        <br>
+        <p>Si le mode d'envoi choisi est Vide - Greniers,</p>
+        <p>Vous recevrez l'email de confirmation de commande dans un délai de 5 jours. </p>
+        <p>Un code vous sera fourni. </p>
+        <p>Vous pouvez ainsi retirer votre commande lors des vide-greniers à venir, à notre stand. </p>
+        <p>Ce code vous sera demandé lors de la transaction physique au vide-greniers.</p>
+        <br>
+        <a href="videgreniers.html">Vide - Greniers à venir</a>
+        
     </form>
 
     <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
@@ -31,21 +57,47 @@
             emailjs.init("ti_tbWUHJIB4qklRd");
         })();
 
+        function genererCode() {
+            var code = '';
+            var caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            var longueur = 6;
+            for (var i = 0; i < longueur; i++) {
+                code += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
+            }
+            return code;
+        }
+
         function afficherPanier() {
             var panier = JSON.parse(localStorage.getItem("panier")) || [];
             var panierContent = document.getElementById("panier-content");
             panierContent.innerHTML = "";
-            panier.forEach(function(article) {
+            panier.forEach(function(article, index) {
                 var articleDiv = document.createElement("div");
                 articleDiv.innerHTML = "<h2>" + article.nom + "</h2>" +
                                        "<p>Couleur: " + article.couleur + "</p>" +
-                                       "<p>Prix: " + article.prix + "€</p>"
+                                       "<p>Prix: " + article.prix + "€</p>" +
+                                       "<button onclick='supprimerArticle(" + index + ")'>Supprimer</button>"; // Ajout du bouton Supprimer avec l'appel à la fonction supprimerArticle
                 panierContent.appendChild(articleDiv);
             });
         }
 
+        function supprimerArticle(index) {
+            var panier = JSON.parse(localStorage.getItem("panier")) || [];
+            panier.splice(index, 1); // Supprime l'article du panier
+            localStorage.setItem("panier", JSON.stringify(panier)); // Met à jour le panier dans le localStorage
+            afficherPanier(); // Réaffiche le panier avec l'article supprimé
+        }
+
         function passerCommande(event) {
             event.preventDefault(); // Empêche le comportement par défaut du formulaire
+            var nom = document.getElementById("nom").value.trim(); // Récupère la valeur du nom (et supprime les espaces vides)
+            var email = document.getElementById("email").value.trim(); // Récupère la valeur de l'email (et supprime les espaces vides)
+            
+            if (!nom || !email) { // Vérifie si les champs nom et email sont vides
+                alert("Veuillez remplir tous les champs obligatoires."); // Affiche une alerte si les champs sont vides
+                return; // Arrête l'exécution de la fonction
+            }
+            
             var panier = JSON.parse(localStorage.getItem("panier")) || [];
             var contenuCommande = "Contenu de la commande :\n\n";
             panier.forEach(function(article) {
@@ -54,9 +106,13 @@
                 contenuCommande += "Prix: " + article.prix + "€\n\n";
             });
 
-            var email = document.getElementById("email").value; // Récupère la valeur de l'email
+            var site = document.getElementById("choix-site").value; // Récupère la valeur du site choisi
+            var code = genererCode(); // Génère le code aléatoire
 
-            contenuCommande += "E-mail d'envoie' : " + email + "\n";
+            contenuCommande += "Nom et prénom : " + nom + "\n";
+            contenuCommande += "E-mail d'envoi' : " + email + "\n";
+            contenuCommande += "Mode d'envoi : " + site + "\n"; // Ajout du mode choisi
+            contenuCommande += "Code de commande : " + code + "\n"; // Ajout du code de commande
 
             var params = {
                 to_email: "starsandco@laposte.net", // Envoie également à l'adresse spécifiée dans le champ email

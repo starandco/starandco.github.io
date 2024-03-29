@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARTICLE - STAR AND CO</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Bandeau en haut de la page -->
+    <div id="bandeau">
+        <img src="./src/starandco2.png" alt="starandcologo" height="70">
+        <a href="index.html">Accueil</a>
+        <a href="catalogue.html">Catalogue</a>
+        <a href="panier.html">Panier</a>
+        <a href="videgreniers.html">Vide - Greniers à venir</a>
+    </div>
+
+    <h1>STAIRCASE</h1>
+    <img src="./src/5.png" alt="Image de l'article 1">
+    <p>Prix: 1.00€ (SANS LES FRAIS DE PORT SI MODE D'ACHAT EST VINTED) !</p>
+    <p>Choisissez les deux couleurs principales du bracelet:</p>
+    <select id="select-color">
+        <option value="red">Rouge</option>
+        <option value="blue">Bleu</option>
+        <option value="green">Vert</option>
+        <option value="yellow">Jaune</option>
+    </select>
+    <select id="select-color2">
+        <option value="black">Noir</option>
+        <option value="white">Blanc</option>
+        <option value="gray">Gris</option>
+        <option value="brown">Marron</option>
+    </select>
+    <button onclick="ajouterAuPanier('STAIRCASE', 1)">Ajouter au panier</button>
+
+    <script>
+        function ajouterAuPanier(nomArticle, prixArticle) {
+            var couleur1 = document.getElementById("select-color").value;
+            var couleur2 = document.getElementById("select-color2").value;
+            var article = { nom: nomArticle, prix: prixArticle, couleur: [couleur1, couleur2] };
+            var panier = JSON.parse(localStorage.getItem("panier")) || [];
+            panier.push(article);
+            localStorage.setItem("panier", JSON.stringify(panier));
+            alert("Article ajouté au panier !");
+        }
+    </script>
+</body>
+</html>
+

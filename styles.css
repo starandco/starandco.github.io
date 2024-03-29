@@ -1,6 +1,6 @@
 /* Style pour le bandeau */
 #bandeau {
-    background-color: #333;
+    background-color: #807e7e;
     color: #fff;
     padding: 10px 0;
     text-align: center;
@@ -23,56 +23,88 @@
 }
 
 #bandeau img {
-    margin-right: 20px;
+    margin-right: px;
 }
 
-/* Style pour le contenu de la page */
-.contenu-page {
-    max-width: 800px; /* Largeur maximale du contenu */
-    margin: 0 auto; /* Centrage horizontal */
-    padding: 20px; /* Espacement intérieur */
+/* Reset CSS */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-/* Style pour les titres de section */
-.section-title {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 10px;
+/* Style général */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f8f8;
 }
 
-/* Style pour les liens du catalogue */
-.catalogue-link {
-    display: block;
+
+
+h1 {
+    text-align: center;
     margin-bottom: 20px;
-    color: #333;
-    text-decoration: none;
-    border: 1px solid #333;
-    padding: 10px;
-    transition: background-color 0.3s, color 0.3s;
 }
 
-.catalogue-link:hover {
-    background-color: #333;
-    color: #fff;
-}
 
-/* Style pour les images du catalogue */
-.catalogue-image {
+.article img {
+    display: block;
+    margin: 0 auto;
     max-width: 100%;
     height: auto;
-    margin-bottom: 10px;
+    border-radius: 10px; /* Ajout de la bordure arrondie */
+    
 }
 
-/* Style pour les boutons */
-.button {
-    background-color: #333;
-    color: #fff;
+.article p {
+    text-align: center;
+    margin-top: 10px;
+}
+
+button {
+    display: block;
+    margin: 0 auto;
     padding: 10px 20px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: #fff;
     border: none;
+    border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s ease;
 }
 
-.button:hover {
-    background-color: #555;
+button:hover {
+    background-color: #0056b3;
 }
+
+/* Reset CSS */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.contenu-page {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start; /* Alignement horizontal */
+}
+
+.article {
+    width: calc(20% - 1px); /* Pour créer 6 articles par ligne */
+    margin-right: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .article {
+        width: 100%; /* Pour afficher les articles en une seule colonne sur des petits écrans */
+        margin-right: 0;
+    }
+}
+
