@@ -95,7 +95,7 @@ button:hover {
 }
 
 .article {
-    width: calc(20% - 1px); /* Pour créer 6 articles par ligne */
+    width: calc(16.666% - 20px); /* Pour créer 6 articles par ligne */
     margin-right: 20px;
     margin-bottom: 20px;
     text-align: center;
